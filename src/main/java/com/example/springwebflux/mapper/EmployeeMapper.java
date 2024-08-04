@@ -2,19 +2,14 @@ package com.example.springwebflux.mapper;
 
 import com.example.springwebflux.dto.EmployeeDto;
 import com.example.springwebflux.entity.Employee;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-public class EmployeeMapper {
-    public static EmployeeDto mapToEmployeeDto(Employee employee){
-        return new EmployeeDto(employee.getId(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getEmail());
-    }
+@Mapper
+public interface EmployeeMapper {
+    EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);
 
-    public static Employee mapTOEmployee(EmployeeDto employeeDto){
-        return new Employee(employeeDto.getId(),
-                employeeDto.getFirstName(),
-                employeeDto.getLastName(),
-                employeeDto.getEmail());
-    }
+    public EmployeeDto mapToEmployeeDto(Employee employee);
+
+    public Employee mapTOEmployee(EmployeeDto employeeDto);
 }

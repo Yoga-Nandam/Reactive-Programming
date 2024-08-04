@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -16,22 +18,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Mono<EmployeeDto> saveEmployee(EmployeeDto employeeDto) {
-        Employee employee = EmployeeMapper.mapTOEmployee(employeeDto);
+        Employee employee = EmployeeMapper.INSTANCE.mapTOEmployee(employeeDto);
         Mono<Employee> employeeResponse = employeeRepository.save(employee);
-        return employeeResponse.map(EmployeeMapper::mapToEmployeeDto);
+        return employeeResponse.map(EmployeeMapper.INSTANCE::mapToEmployeeDto);
     }
 
     @Override
     public Mono<EmployeeDto> getEmployee(String employeeId) {
         Mono<Employee> response = employeeRepository.findById(employeeId);
-        return response.map(EmployeeMapper::mapToEmployeeDto);
+        return response.map(EmployeeMapper.INSTANCE::mapToEmployeeDto);
     }
 
     @Override
     public Flux<EmployeeDto> getAllEmployees() {
-        Flux<Employee> employeeFlux  = employeeRepository.findAll();
+        Flux<Employee> employeeFlux = employeeRepository.findAll();
         return employeeFlux
-                .map(EmployeeMapper::mapToEmployeeDto)
+                .delayElements(Duration.ofSeconds(1))
+                .map(EmployeeMapper.INSTANCE::mapToEmployeeDto)
                 .switchIfEmpty(Flux.empty());
     }
 
@@ -44,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             existingEmployee.setLastName(employeeDto.getLastName());
             existingEmployee.setEmail(employeeDto.getEmail());
             return employeeRepository.save(existingEmployee);
-        }).map((EmployeeMapper::mapToEmployeeDto));
+        }).map((EmployeeMapper.INSTANCE::mapToEmployeeDto));
     }
 
     @Override
