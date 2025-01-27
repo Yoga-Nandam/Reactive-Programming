@@ -107,3 +107,9 @@ Start the server
   mvn spring-boot:run
 ```
 
+## Run as docker multi-container
+
+1). Get into resource folder and open terminal/cmd  
+2). docker logn -u <user_name> -p <password>  
+3). docker compose up
+
