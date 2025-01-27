@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017
+  app:
+    image: myfirstdockerregistry/spring-reactive
+    container_name: spring-reactive
+    ports:
+      - 8081:8080
+    links:
+      - mongodb
