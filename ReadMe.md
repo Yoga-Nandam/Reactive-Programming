@@ -110,6 +110,6 @@ Start the server
 ## Run as docker multi-container
 
 1). Get into resource folder and open terminal/cmd  
-2). docker logn -u <user_name> -p <password>  
+2). docker login -u <user_name> -p <password>  
 3). docker compose up
 
